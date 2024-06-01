@@ -50,6 +50,8 @@ types of tools:
 
 ***[Testing](https://www.geeksforgeeks.org/software-testing-tools/)***
 
+***module bundler***
+
 ### APIs
 > tools that connect the frontend to the backend (falls within both frontend and backend)
 
