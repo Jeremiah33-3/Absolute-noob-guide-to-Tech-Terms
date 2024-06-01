@@ -11,11 +11,14 @@
 ### [Frontend](https://www.geeksforgeeks.org/front-end-development/)
 > tools required to build a user interface. development of the user side. (washing machine buttons, what user can see and set)
 
-The real confusions, types of tools availble:
+The real confusions, types of tools available:
+
 ***Language***
 - HTML
 - CSS
 - JS
+
+
 ***Framworks/Libraries***
 > Which are structures/set of predefined functions that provide a base for the application development process. It provides a set of tools and elements that help in the speedy development process. It acts like a template that can be used and even modified to meet the project requirements. This prevents developers having to write everything from scartch
 - React
