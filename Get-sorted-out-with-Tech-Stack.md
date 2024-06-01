@@ -33,6 +33,7 @@ The real confusions, types of tools available:
 > server-side of the website: including tools such as database to store data, cloud providers to purchase such infrastructure from, and various APIs. (washing machine internal tools to spin the clothes, mix the detergent, which doesn't need user's intervention)
 
 types of tools:
+
 ***languages/frameworks***
 - PHP/Laravel
 - JS/NodeJS
