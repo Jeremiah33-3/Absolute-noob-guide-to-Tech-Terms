@@ -10,13 +10,37 @@ coming up next
 
 ### Gateway 
 
+### Rest API
+
 ### TCP vs UDP
+> [TCP](https://www.geeksforgeeks.org/what-is-transmission-control-protocol-tcp/): transmission control protocols (TCP/IP network): connection-oriented protocol for communications that helps in the exchange of messages between different devices over a network
+- must first acknowledge a sesssion between the two computers that are communicating (verification)
+  - by sending SYN first, then SYN ACK, then send back ACK RECEIVED -> then data can be delivered (starts communication)
+- gurantees delivery of data (will resend if data go astray)
+> [UDP](https://www.geeksforgeeks.org/user-datagram-protocol-udp/): User Datagram Protocol: connectionless-oriented protocol
+- it does not establish a session and does not gurantee data delivery
+- less overhead and latency --> faster connection than TCP (for games and video communication) 
 
 ### HTTPS, TLS, HTTP, SSL
+> HTTP: used for viewing webpages on the internet
+- all information is sent in clear text (transferred over public internet), therefore it is vulnerable to hackers (clear text)
+- not good for transferring sensitive data
+> HTTPS: secured HTTP, HTTP with a secured feature
+- encrypts the data that is bein retrieved by HTTP -> ensures that all the data that is transferred is secured through encrypted algorithms (encrypted text)
+***HTTPS can use either of the below secure protocols to encrypt its data***
+> SSL: secure sockets layer is a protocol that is used to ensure security on the internet; uses public key encryption to secure data
+- SSL encrypts the link between a web server and a browser which ensures that all data passed between them remain private and free from attack.
+- Working architecture
+  - computer connects to a website that is using SSL
+  - computer web browser asks the website to identify itself
+  - web server sends it a copy of the SSL certificate (a certificate used to autheticate the identity of a website, for trustworthiness used)
+  - trusted then computer browser will send a message to website, the server will respond back with an acknowledgeablement so an SSL session can be established
+  - now encrypted data can be exchanged between computer and web server
+> Transport layer security: similar to SSL (based on the same specifications), like SSL also autheticates server, client then exchange encrypted data
+- latest industry standard cryptographic protocol, a successor to SSL
 
-### DNS
-
-### Rest API
+### [DNS](https://www.geeksforgeeks.org/whats-is-domain-name-systemdns/)
+> translate human-readable domain name into IP address (phone book) 
 
 ### [Port](https://youtu.be/g2fT-g9PX9o?si=fLGM2XCPdfw0IZcG)
 > Port is a logical connection that is used by programs and services to exchange information. It is not a physical connection.
