@@ -2,6 +2,10 @@
 
 coming up next
 
+### JWT Token and Session
+
+### Cookie
+
 ### Subnet
 
 ### Router
