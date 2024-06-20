@@ -12,6 +12,14 @@ coming up next
 
 ### Rest API
 
+### RPC
+> Remote Procedure Call is a framework/[architectural style](https://aws.amazon.com/compare/the-difference-between-rpc-and-rest/?nc1=h_ls) for APIs, which are mechanisms used to enable 2 softwares componnets to communicate with each other using a set of protocols/definitions. RPC's biggest feature is that it allows developers to call remote functions on external servers as if it was local.
+
+- different from REST, REST allows developers to perform specific data operations on the remote server, and it is a set of rules instead of a system/framework
+- RPC: function call is made on the client side using HTTP POST while the actual function is invoked on the server side; client must know the function name and parameters
+- however, REST usings HTTP verbs/methods to perform data operation, through server resource URLs, without the need to know the specific function names on the server; more standardised methods
+- [gRPC](https://www.youtube.com/watch?v=gnchfOojMk4) is gaining popularity
+
 ### TCP vs UDP
 > [TCP](https://www.geeksforgeeks.org/what-is-transmission-control-protocol-tcp/): transmission control protocols (TCP/IP network): connection-oriented protocol for communications that helps in the exchange of messages between different devices over a network
 - must first acknowledge a sesssion between the two computers that are communicating (verification)
