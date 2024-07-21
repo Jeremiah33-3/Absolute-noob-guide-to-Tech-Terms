@@ -8,4 +8,9 @@ Named exports versus default exports, link [here](https://stackoverflow.com/ques
 more info [here](https://www.freecodecamp.org/news/difference-between-default-and-named-exports-in-javascript/).
 
 ## React hooks
-- it is a function that is returning something (e.g. useState() returns an array with two values representing current state and the state setter function)
+
+it is a function that is returning something (e.g. useState() returns an array with two values representing current state and the state setter function).
+
+To notes:
+- best practise to define static data models (data that does not change) outside of react components so they won't be recreated each time the componenet re-renders
+- hooks such as useState handles dynamic data 
