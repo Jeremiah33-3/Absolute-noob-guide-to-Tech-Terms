@@ -16,6 +16,8 @@ To notes:
 - hooks such as useState handles dynamic data 
 - useful to use the [computed property names](https://eloquentcode.com/computed-property-names-in-javascript) when updating object in useState
 - good practise to **return** a cleanup function in some effects, especially those that might cause the DOM to go haywire when re-rendering; cleanup function runs both when re-rendering when dependencies change and also during [unmounting](https://stackoverflow.com/questions/31556450/what-is-mounting-in-react-js), cleanup code should have a corresponding setup code, which are usually 'symmetrical'.
+- to prevent effect hook running on every re-render (ie call effect hook only on first render), pass in an empty array as the second argument, the `dependencies` array, in which the elements are variables/states, triggering the hook to run when one or many of them changes values
+- cleanup function will be called when component unmounts
 
 
 ## Miscellaneous
