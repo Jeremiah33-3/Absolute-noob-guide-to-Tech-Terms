@@ -18,6 +18,20 @@ To notes:
 - good practise to **return** a cleanup function in some effects, especially those that might cause the DOM to go haywire when re-rendering; cleanup function runs both when re-rendering when dependencies change and also during [unmounting](https://stackoverflow.com/questions/31556450/what-is-mounting-in-react-js), cleanup code should have a corresponding setup code, which are usually 'symmetrical'.
 - to prevent effect hook running on every re-render (ie call effect hook only on first render), pass in an empty array as the second argument, the `dependencies` array, in which the elements are variables/states, triggering the hook to run when one or many of them changes values
 - cleanup function will be called when component unmounts
+- only call hooks at the top-level and from React functions
+- bad practise to call hooks from loops, conditions, or nested functions since data and functions managed by hooks are being handled based on their order in the function component's definition
+
+
+### Custom hook to reuse logic
+information [here](https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-sharing-logic-between-components).
+- can create our own React hook to reuse a certain piece of logic
+- since hooks are really functions, we can achieve this by defining a function that achieves the behaviour -- that'll be the hook
+- note that hook name **always** start with **use**
+- however, custom hook does not let you share states, but only stateful logic. the state var in one call of hook is independent of that of another. [this](https://react.dev/learn/sharing-state-between-components) is how to share states between components.
+
+## Request, response, and object tpyes
+### [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
+- some methods, attributes to play with the object
 
 
 ## Miscellaneous
