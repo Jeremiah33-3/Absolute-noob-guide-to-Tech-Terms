@@ -20,6 +20,7 @@ To notes:
 - cleanup function will be called when component unmounts
 - only call hooks at the top-level and from React functions
 - bad practise to call hooks from loops, conditions, or nested functions since data and functions managed by hooks are being handled based on their order in the function component's definition
+- group the state and the corresponding effect hook together, when using separate effect hooks
 
 
 ### Custom hook to reuse logic
