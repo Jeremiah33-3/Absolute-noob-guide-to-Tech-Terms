@@ -34,6 +34,14 @@ information [here](https://react.dev/learn/reusing-logic-with-custom-hooks#custo
 ### [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
 - some methods, attributes to play with the object
 
+## Container components and presentational components
+> Separating container components from presentational components is a popular React programming pattern.
+
+Functional parts of the components such as maintaing states, using effects, passing down states are container component's job, also known as stateful component.
+
+Presentational components are stateless components that deal only with JSX. It should be an exported component and should not render itself because a presentational component will always get rendered by a container component.
+
+They can communicate with one another through passing state through props. But for presentational component to update container component about changes, container will have a handler function passed as a prop to the presentational component. Container component should render the presentational component(s) instead of other JSX.
 
 ## Miscellaneous
 useful stuffs that might be overlooked:
