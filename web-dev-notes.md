@@ -59,6 +59,12 @@ const darkMode = {
 ...
 <h1 style={darkMode}>Hello world</h1>
 ```
+- Reference CSS properties by writing CSS property names as camelCase as in [style object](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style) of the DOM.
+- Write numeric value as string values e.g. "20px", "20%", "2em"
+
+
+A better way making styles modular, organized, and reusable is to create separate stylesheets for each component, then import the stylesheet using the `import` keyword.
+- Use CSS [modules](https://css-tricks.com/css-modules-part-1-need/) to prevent conflicting class names in the style sheets, by scoping the classNames, variables etc. to local scope
 
 ## Miscellaneous
 useful stuffs that might be overlooked:
