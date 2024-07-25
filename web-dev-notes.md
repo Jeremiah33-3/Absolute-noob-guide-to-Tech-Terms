@@ -43,6 +43,14 @@ Presentational components are stateless components that deal only with JSX. It s
 
 They can communicate with one another through passing state through props. But for presentational component to update container component about changes, container will have a handler function passed as a prop to the presentational component. Container component should render the presentational component(s) instead of other JSX.
 
+## [controlled and uncontrolled components](https://www.freecodecamp.org/news/what-are-controlled-and-uncontrolled-components-in-react/) in react 
+Controlled components does not manage their states while uncontrolled components maintain their own internal states. The former are managed by React states, value of the form element is set and updated through React state, making React the "single source of truth" for the form data. 
+
+
+Controlled components offer various benefits like predictable state management, easier form validation and easy integration with complex UI libraries. When you give a component a value attritube, the component become controlled.
+
+Uncontrolled components is simpler and faster for basic form handling, used when form data is not needed in React state. Accessing its form data is done directly thru DOM refs. Might be used with useRef() hook.
+
 ## React styles
 Different ways to style: examples are inline styles and style object variable
 
