@@ -43,6 +43,23 @@ Presentational components are stateless components that deal only with JSX. It s
 
 They can communicate with one another through passing state through props. But for presentational component to update container component about changes, container will have a handler function passed as a prop to the presentational component. Container component should render the presentational component(s) instead of other JSX.
 
+## React styles
+Different ways to style: examples are inline styles and style object variable
+
+Inline styles are styles written as an **attribute** of the element. `<h1 style={{ color: 'red' }}>Hello world</h1>` 
+- the outer curly braces signal that everything in between is to be read in JS
+- inner braces creates a JS object literal
+
+Style object variable is a JS object literal with properties and values to style an element. it is injected to the style attribute of a component. E.g.:
+```js
+const darkMode = {
+  color: 'white',
+  background: 'black'
+};
+...
+<h1 style={darkMode}>Hello world</h1>
+```
+
 ## Miscellaneous
 useful stuffs that might be overlooked:
 
