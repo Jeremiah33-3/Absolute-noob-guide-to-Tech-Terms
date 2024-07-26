@@ -53,6 +53,7 @@ Uncontrolled components is simpler and faster for basic form handling, used when
 
 ## React styles
 Different ways to style: examples are inline styles and style object variable
+- some other ways in this [guide](https://www.freecodecamp.org/news/style-react-apps-with-css/).
 
 Inline styles are styles written as an **attribute** of the element. `<h1 style={{ color: 'red' }}>Hello world</h1>` 
 - the outer curly braces signal that everything in between is to be read in JS
@@ -73,6 +74,29 @@ const darkMode = {
 
 A better way making styles modular, organized, and reusable is to create separate stylesheets for each component, then import the stylesheet using the `import` keyword.
 - Use CSS [modules](https://css-tricks.com/css-modules-part-1-need/) to prevent conflicting class names in the style sheets, by scoping the classNames, variables etc. to local scope
+- need to 'link up' the components to the css classes using the className attribute in React component, unlike in raw HTML where we give elements class attributes. e.g.
+```css
+.my-class {
+...
+}
+
+.another-class {
+...
+}
+```
+```js
+function MyComponent() {
+  return (
+    <div className="my-class another-class">
+      say something
+    </div>
+  );
+}
+```
+
+We also have React components library such as [MUI](https://mui.com/material-ui/) that provide componenets with styles already applied to them, and developers using them just need to customise if they wish through props passes to the MUI components.
+
+Note: good practise to use linter to check css syntax correctness.
 
 ## Miscellaneous
 useful stuffs that might be overlooked:
