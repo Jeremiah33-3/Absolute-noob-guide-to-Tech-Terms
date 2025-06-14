@@ -29,4 +29,4 @@
 | output | `echo "hello"` |
 | output overwrite to a file | `echo "sth" > filename.txt` |
 | output append to a file | `echo "sth" >> filename.txt` |
-| Piping | `echo "Hello World" | tr 'a-z' 'A-Z'` |
+| Piping | `echo "Hello World" \| tr 'a-z' 'A-Z'` |
