@@ -29,6 +29,7 @@
 | read multiple inputs (separate by space) | `read var_name1 \n read var_name2` |
 | use flags for input prompt | `read -p "Enter your age: " age` |
 | reading from a file | `while IFS= read -r line; do \n echo "$line" \n done < file.txt` |
+| read a single character | `read -n1 input` |
 | output | `echo "hello"` |
 | output overwrite to a file | `echo "sth" > filename.txt` |
 | output append to a file | `echo "sth" >> filename.txt` |
@@ -38,3 +39,12 @@
 | greater than/ equal to/ lesser than | `if [ "$num1" -gt/-eq/-lt $num2" ]; then ..` (must include space between [])|
 | evaluate expressions | `expr {expression}` |
 | if else | ```if [ condition ]; then .. elif [ another_condition ]; then .. else .. fi``` |
+| regex | `[[ ..=~.. ]]` |
+
+## notes
+
+- for comparing multiple conditions (uses && and ||):
+```bash
+if [ "$X" -eq "$Y" ] && [ "$Y" -eq "$Z" ]; then
+...
+```
