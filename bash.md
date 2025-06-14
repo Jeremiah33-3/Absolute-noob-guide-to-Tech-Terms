@@ -25,8 +25,16 @@
 | for loop (list) | `for item in list_name do ... done` |
 | for loop (range) | `for i in {0..99} do ... done` |
 | input | `read var_name` |
+| read multiple inputs (separate by space) | `read var_name1 var_name2` |
+| read multiple inputs (separate by space) | `read var_name1 \n read var_name2` |
+| use flags for input prompt | `read -p "Enter your age: " age` |
 | reading from a file | `while IFS= read -r line; do \n echo "$line" \n done < file.txt` |
 | output | `echo "hello"` |
 | output overwrite to a file | `echo "sth" > filename.txt` |
 | output append to a file | `echo "sth" >> filename.txt` |
 | Piping | `echo "Hello World" \| tr 'a-z' 'A-Z'` |
+| Arithmetic expansions | `product=$((num1 * num2))` |
+| Arithmetic expressions | `product=$(expr $num1 \* $num2)` |
+| greater than/ equal to/ lesser than | `if [ "$num1" -gt/-eq/-lt $num2" ]; then ..` (must include space between [])|
+| evaluate expressions | `expr {expression}` |
+| if else | ```if [ condition ]; then .. elif [ another_condition ]; then .. else .. fi``` |
