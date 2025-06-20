@@ -19,6 +19,14 @@
 | :--- | :--- | :--- | :--- |
 | Absolute | overloaded `Math.abs()` for different numeric types | <stdlid.h> --> `abs(int)`, <math.h> --> `fabs(double)` | abs() | 
 
+## Chacters
+| Java | C | Python |
+| :--- | :--- | :--- |
+| implicit conversion to ascii: `int acsii = 'a';` |  implicit conversion to ascii: `int acsii = 'a';` | `ord(char)` |
+
+Syntactic sugar:
+- in C: you can do `int i = 0; s[i] != '\0'; i++` in a for loop for simplicity of accessing a string.
+
 ## Dynamic memory allocation in C
 
 | consideration | `malloc()` | `calloc()` |
