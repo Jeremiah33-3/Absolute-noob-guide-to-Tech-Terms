@@ -13,6 +13,10 @@
 **Masking**
 - Making the number unsigned: creates a mask and set all bits to 1, then AND [e.g. `mask = (1 << 32) - 1` in python or directly `0xFFFFFFFFL`]
 
+**Tricks with logical operators**
+- XOR: can find out a unique numbre in an array where all other elements appear twice (or even frequency)
+- 
+
 ## Mathematical functions
 
 | Functions | Java | C | Python |
