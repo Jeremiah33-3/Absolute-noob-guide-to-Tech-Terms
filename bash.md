@@ -24,6 +24,7 @@
 | :---: | :---: |
 | for loop (list) | `for item in list_name do ... done` |
 | for loop (range) | `for i in {0..99} do ... done` |
+| for loop 'the normal way' | `for ((i = 1; i <= N; i++)); do .. done` |
 | input | `read var_name` |
 | read multiple inputs (separate by space) | `read var_name1 var_name2` |
 | read multiple inputs (separate by space) | `read var_name1 \n read var_name2` |
@@ -76,4 +77,5 @@ printf "%.3f\n" "$result"
 if [ "$X" -eq "$Y" ] && [ "$Y" -eq "$Z" ]; then
 ...
 ```
-- note: `$(( ... ))` evaluates the expression inside the double parenthesis as an **integer** arithmetic operation and returns the result.
+- `$(( ... ))` evaluates the expression inside the double parenthesis as an **integer** arithmetic operation and returns the result.
+- `for i in {1..N}` This syntax does not expand N as a variable, use the 'normal way' for loop instead.
