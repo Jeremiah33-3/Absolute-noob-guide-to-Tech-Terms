@@ -30,7 +30,7 @@
 | use flags for input prompt | `read -p "Enter your age: " age` |
 | reading from a file | `while IFS= read -r line; do \n echo "$line" \n done < file.txt` |
 | read a single character | `read -n1 input` |
-| output | `echo "hello"` |
+| output | `echo "hello"` or `printf` |
 | output overwrite to a file | `echo "sth" > filename.txt` |
 | output append to a file | `echo "sth" >> filename.txt` |
 | Piping | `echo "Hello World" \| tr 'a-z' 'A-Z'` |
@@ -41,6 +41,34 @@
 | if else | ```if [ condition ]; then .. elif [ another_condition ]; then .. else .. fi``` |
 | regex | `[[ ..=~.. ]]` |
 
+## Arithmetic core
+
+### `bc`
+`bc` is an external command-line calculator that expects input via standard output (`echo "expression" | bc`) or a file (`bc < file`).
+Syntax:
+```bash
+result=$(echo "scale=2; $a / $b" | bc)
+```
+OR using here-string
+```bash
+result=$(bc <<< "scale=2; $a / $b")
+```
+- An example:
+```bash
+#!/bin/bash
+
+read -p "Enter expression: " expr
+
+# Replace ^ with ** since bc uses ^ for bitwise XOR, not power
+expr="${expr//^/**}"
+
+# Evaluate the expression using bc with scale set to high precision
+result=$(echo "scale=10; $expr" | bc -l)
+
+# Round to 3 decimal places using printf
+printf "%.3f\n" "$result"
+```
+
 ## notes
 
 - for comparing multiple conditions (uses && and ||):
@@ -48,3 +76,4 @@
 if [ "$X" -eq "$Y" ] && [ "$Y" -eq "$Z" ]; then
 ...
 ```
+- note: `$(( ... ))` evaluates the expression inside the double parenthesis as an **integer** arithmetic operation and returns the result.
