@@ -44,9 +44,16 @@
 | Java | C | Python |
 | :--- | :--- | :--- |
 | implicit conversion to ascii: `int acsii = 'a';` |  implicit conversion to ascii: `int acsii = 'a';` | `ord(char)` |
+| `char c -> c = Character.toLowerCase(c); c - 'a';` | `char c -> c = tolower(c); c - 'a';` | `index = ord(char) - ord('A')` and `index = ord(char) - ord('a')`|
+| `Character.isLetter(char c)` | `isalpha(char c)` <ctype.h> | `c.isalpha()` where c is var name holding the char |
 
 Syntactic sugar:
 - in C: you can do `int i = 0; s[i] != '\0'; i++` in a for loop for simplicity of accessing a string.
+- tricks for Casear Cipher
+```c
+char base = isupper(s[i]) ? 'A' : 'a';
+s[i] = (s[i] - base + k) % 26 + base
+```
 
 ## varargs
 
