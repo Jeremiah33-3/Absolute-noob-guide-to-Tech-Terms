@@ -1,3 +1,13 @@
+# Table of content
+- [Bitwise operators](#Bitwise-operators)
+- [Mathematical functions](#Mathematical-functions)
+- [Characters](#Characters)
+- [varargs](#varargs)
+- [Datetime](#Datetime)
+- [Dynamic memory allocation in C](#Dynamic-memory-allocation-in-C)
+- [Macros in C](#Macros-in-C)
+
+
 ## Bitwise operators
 
 | Operators | Sign | Language |
@@ -40,7 +50,7 @@
 | less than marocs | none | `isless(x, y)` macros | none |
 | predefined infinity representation | `Double.POSITIVE_INFINITY`/`Double.NEGATIVE_INFINITY`  or `Integer.MAX_VALUE` | `HUGE_VAL`, `HUGE_VALF`, `HUGE_VALL` macros | `float('inf')`/`float('-inf')`|
 
-## Chacters
+## Characters
 | Java | C | Python |
 | :--- | :--- | :--- |
 | implicit conversion to ascii: `int acsii = 'a';` |  implicit conversion to ascii: `int acsii = 'a';` | `ord(char)` |
@@ -61,6 +71,61 @@ s[i] = (s[i] - base + k) % 26 + base
 | :--- | :--- | :--- |
 | `int...nums` | <stdarg.h>, `int count, ...` | `*args`, `**kwargs` |
 | array, must be last param | need <stdarg.h> va_list, va_start, va_arg, va_end | positional args as tuple and kw args as dict
+
+## Datetime
+
+### Python 
+
+`datetime` objects designed for parsing and manipulating with dates and times.
+
+- `strftime` method: format datetime objects into readable strings --> formatter reference [here](https://strftime.org/)
+```python
+from datetime import datetime
+
+now = datetime.now()
+formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+print(formatted_date)
+```
+
+### C
+
+C uses the `struct tm` structure from `<time.h>` to represent date and time
+
+E.g.:
+```c
+#include <stdio.h>
+#include <time.h>
+
+int main() {
+    time_t now = time(NULL);
+    struct tm *local = localtime(&now);
+
+    printf("Date: %04d-%02d-%02d\n", local->tm_year + 1900, local->tm_mon + 1, local->tm_mday);
+    printf("Time: %02d:%02d:%02d\n", local->tm_hour, local->tm_min, local->tm_sec);
+
+    return 0;
+}
+```
+
+### Java
+
+Java has `java.time.LocalDateTime` and `java.time.format.DateTimeFormatter` for working with dates and times. LocalDateTime is immutable and thread-safe. DateTimeFormatter is used for formatting, similar to Python’s strftime.
+
+E.g.
+```java
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Main {
+    public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = now.format(formatter);
+
+        System.out.println("Current Date and Time: " + formattedDate);
+    }
+}
+```
 
 ## Dynamic memory allocation in C
 
