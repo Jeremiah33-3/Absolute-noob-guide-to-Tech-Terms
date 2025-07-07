@@ -1,5 +1,6 @@
 # Table of content
 - [Bitwise operators](#Bitwise-operators)
+- [arrays](#arrays)
 - [Mathematical functions](#Mathematical-functions)
 - [Characters](#Characters)
 - [varargs](#varargs)
@@ -25,7 +26,25 @@
 
 **Tricks with logical operators**
 - XOR: can find out a unique numbre in an array where all other elements appear twice (or even frequency)
-- 
+
+## arrays
+
+| Functionality | Java | C | Python
+| :--- | :--- | :--- | :--- |
+| **size of array** | `int size = arr.length;`| `int size = sizeof(arr_name) / sizeof(arr_name[0]);` | `size = len(arr)` |
+| **size of string** | `int size = str.length;` | `int size = strlen(str);` | `len(str)` |
+
+Notes:
+- for C, dynamically allocated multi-dimensional arrays require a separate variable to track its size (cannot simply use `sizeof(arr_name)`, as it returns the size of the pointer only **). For not null-terminated arrays, a while loop might be required:
+```c
+int get_num_rows(char** grid) {
+    int count = 0;
+    while (grid[count] != NULL) {
+        count++;
+    }
+    return count;
+}
+```
 
 ## Mathematical functions
 
