@@ -26,6 +26,17 @@
 
 **Tricks with logical operators**
 - XOR: can find out a unique numbre in an array where all other elements appear twice (or even frequency)
+- AND: can check if a number is a power of 2 -- `n & (n - 1) == 0`
+- Tricks for finding the largest power of two less than a given number n:
+```c
+long largest_pow_two(long n) {
+    long p = 1;
+    while (p << 1 < n) {
+        p <<= 1;
+    }
+    return p;
+}
+```
 
 ## arrays
 
