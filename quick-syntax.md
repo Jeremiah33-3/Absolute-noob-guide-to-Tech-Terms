@@ -37,6 +37,7 @@ long largest_pow_two(long n) {
     return p;
 }
 ```
+- n + x = n ^ x: no carry forward, "0 ^ 1" = "0 + 1", thus count number of zeros in n (in binary representation), then 2^zero_bits = the number of possible values x can take
 
 ## arrays
 
