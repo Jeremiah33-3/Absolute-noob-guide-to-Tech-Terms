@@ -69,6 +69,9 @@ int get_num_rows(char** grid) {
 | less than marocs | none | `isless(x, y)` macros | none |
 | predefined infinity representation | `Double.POSITIVE_INFINITY`/`Double.NEGATIVE_INFINITY`  or `Integer.MAX_VALUE` | `HUGE_VAL`, `HUGE_VALF`, `HUGE_VALL` macros | `float('inf')`/`float('-inf')`|
 
+**Notes**:
+- for C, the tricky parts in operations can be assigning the numbers to the correct types -- e.g., large integer might require a type of `long` or `long long`
+
 ## Characters
 | Java | C | Python |
 | :--- | :--- | :--- |
