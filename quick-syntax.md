@@ -75,6 +75,7 @@ int get_num_rows(char** grid) {
 | implicit conversion to ascii: `int acsii = 'a';` |  implicit conversion to ascii: `int acsii = 'a';` | `ord(char)` |
 | `char c -> c = Character.toLowerCase(c); c - 'a';` | `char c -> c = tolower(c); c - 'a';` | `index = ord(char) - ord('A')` and `index = ord(char) - ord('a')`|
 | `Character.isLetter(char c)` | `isalpha(char c)` <ctype.h> | `c.isalpha()` where c is var name holding the char |
+| `+`, `str.concat(str2)`or `StringBuilder` class for better performance | `strcat(char* dest, char* source);` from `<string.h>` | `+`, `+=`, `separator.join(arr_of_str)` |
 
 Syntactic sugar:
 - in C: you can do `int i = 0; s[i] != '\0'; i++` in a for loop for simplicity of accessing a string.
