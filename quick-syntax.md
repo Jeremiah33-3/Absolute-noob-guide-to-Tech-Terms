@@ -45,6 +45,8 @@ long largest_pow_two(long n) {
 | :--- | :--- | :--- | :--- |
 | **size of array** | `int size = arr.length;`| `int size = sizeof(arr_name) / sizeof(arr_name[0]);` | `size = len(arr)` |
 | **size of string** | `int size = str.length;` | `int size = strlen(str);` | `len(str)` |
+| **declaration** | `int[] nums;` | `int numbers[5];` or pointer `int* nums;` | `nums = []/[...]` |
+| **initialisation** | `int[] nums = new int[5];` or `int[] nums = {1, 2, 3, 4, 5}` | `int numbers[] = {1, 2, 3, 4, 5};` | `nums = []/[...]` |
 
 Notes:
 - for C, dynamically allocated multi-dimensional arrays require a separate variable to track its size (cannot simply use `sizeof(arr_name)`, as it returns the size of the pointer only **). For not null-terminated arrays, a while loop might be required:
@@ -56,6 +58,13 @@ int get_num_rows(char** grid) {
     }
     return count;
 }
+```
+- 2D array declaration in C:
+```c
+int array[2][3] = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
 ```
 
 ## Mathematical functions
