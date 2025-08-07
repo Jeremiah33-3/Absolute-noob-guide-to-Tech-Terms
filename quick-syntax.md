@@ -7,6 +7,7 @@
 - [Datetime](#Datetime)
 - [Dynamic memory allocation in C](#Dynamic-memory-allocation-in-C)
 - [Macros in C](#Macros-in-C)
+- [OOP](#OOP)
 
 
 ## Bitwise operators
@@ -213,4 +214,84 @@ int maxVal = MAX(10, 20); // expands to the expression
 - undefining macros: remove a macro definition by:
 ```c
 #undef PI
+```
+
+## OOP
+
+### Ways to create a struct instance in C
+1. Static Allocation
+You can declare and initialize a struct instance directly in your code.
+
+```c
+#include <stdio.h>
+
+struct Point {
+    int x;
+    int y;
+};
+
+int main() {
+    struct Point p1 = {10, 20}; // Static allocation with initialization
+    printf("Point: (%d, %d)\n", p1.x, p1.y);
+    return 0;
+}
+```
+**Problem**: a stack-allocated object that will go out of scope once the function ends if allocating in the function.
+
+2. Dynamic Allocation
+Using malloc (from <stdlib.h>) to allocate memory for a struct dynamically.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Point {
+    int x;
+    int y;
+};
+
+int main() {
+    struct Point *p2 = (struct Point *)malloc(sizeof(struct Point));
+    if (p2 != NULL) {
+        p2->x = 30;
+        p2->y = 40; // Access members using `->`
+        printf("Point: (%d, %d)\n", p2->x, p2->y);
+        free(p2); // Free allocated memory
+    }
+    return 0;
+}
+```
+
+most directly,
+```c
+SinglyLinkedListNode* new_curr = malloc(sizeof(SinglyLinkedListNode));
+new_curr->data = data;
+new_curr->next = llist;
+```
+
+Consideration: with `malloc`, comes `free` (if not in use anymore)
+
+3. Using a Function
+Create and return a struct instance from a function.
+
+```c
+#include <stdio.h>
+
+struct Point {
+    int x;
+    int y;
+};
+
+struct Point createPoint(int x, int y) {
+    struct Point p;
+    p.x = x;
+    p.y = y;
+    return p;
+}
+
+int main() {
+    struct Point p3 = createPoint(50, 60);
+    printf("Point: (%d, %d)\n", p3.x, p3.y);
+    return 0;
+}
 ```
