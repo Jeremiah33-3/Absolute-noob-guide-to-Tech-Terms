@@ -8,6 +8,7 @@
 - [Dynamic memory allocation in C](#Dynamic-memory-allocation-in-C)
 - [Macros in C](#Macros-in-C)
 - [OOP](#OOP)
+- [Hashmap in C][#Hashmap-in-C]
 
 
 ## Bitwise operators
@@ -321,4 +322,85 @@ SinglyLinkedListNode* mergeLists(SinglyLinkedListNode* head1, SinglyLinkedListNo
 
     return dummy.next;
 }
+```
+## Hashmap in C
+
+### Code:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+// define a hash size depending on use case
+#define HASH_SIZE 100003
+
+typedef struct Node {
+    int value;
+    int index;
+    struct Node* next;
+} Node;
+
+Node* hashTable[HASH_SIZE];
+
+// simple hash function
+int hash(int value) {
+    return (value % HASH_SIZE + HASH_SIZE) % HASH_SIZE;
+}
+
+void insert(int value, int index) {
+    int hash_indx = hash(value);
+    Node* newNode = malloc(sizeof(Node));
+    newNode->value = value;
+    newNode->index = index;
+    newNode->next = hashTable[hash_indx];
+    hashTable[hash_indx] = newNode;
+}
+
+// implementation depends on use cases
+int find(int value, int curr_idx) {
+    int hash_indx = hash(value);
+    Node* cur = hashTable[hash_indx];
+    while (cur) {
+        if (cur->value == value && curr->index != curr_idx) return cur->index;
+        cur = cur->next;
+    }
+    return -1;
+}
+```
+### choosing a good hash table size
+
+1. Problem constraints
+- maximum number of elements the system will store - **n**
+- Rule of thumb: a hash table big enough that the average chain length stays near 1: `table_size ~= 1.2 * n` [table has ~20% more slots than elements to reduce collisions]
+
+2. Pick a prime number
+- because if the table size shares factors with the data distribution (multiples of 10 e.g.), collisions explode
+- a prime number helps scatter keys more evenly in the modulo operation
+- trial division
+
+3. Consider memory trade-offs
+- each slot in the hash table needs a pointer or linked list node --> a tight memory budget might required reduction of the load factor to about ~0.7-0.8 instead of 1.2
+- competitive programming: err on the side of slightly bigger tables to keep O(1) lookup time
+
+***summary formula***: `table_size = next_prime_above(ceil(load_factor * n))`
+
+### choosing a good hash function
+
+1. Define "good"
+Characteristics:
+    1. Distribute keys evenly across buckets (avoid clustering).
+    2. Be fast to compute (especially in competitive programming).
+    3. Be deterministic (same input → same output).
+    4. Minimize collisions for your expected input range.
+
+2. Key's data types and characteristics
+- Integers in a small range → direct hashing or modulo is fine.
+- Integers in a wide range → need bit mixing or multiplication hashing.
+- Strings → need polynomial rolling or FNV-like hash.
+- Composite structures → combine field hashes (e.g., XOR, shift-add).
+- Integers: simple modulo (for clean distributions) `hash = key % table_size` (table_size is prime and data distribution is not pathological) --> **data cannot have patterns that align with table size**
+- Integers: multiplicative hashing:
+```c
+unsigned int hash = (unsigned int)key;
+hash = (hash * 2654435761u) % table_size; // golden ratio (scramble bits to even out patterend inputs)
 ```
