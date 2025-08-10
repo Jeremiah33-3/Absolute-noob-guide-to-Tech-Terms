@@ -8,7 +8,7 @@
 - [Dynamic memory allocation in C](#Dynamic-memory-allocation-in-C)
 - [Macros in C](#Macros-in-C)
 - [OOP](#OOP)
-- [Hashmap in C][#Hashmap-in-C]
+- [Hashmap in C](#Hashmap-in-C)
 
 
 ## Bitwise operators
@@ -398,9 +398,61 @@ Characteristics:
 - Integers in a wide range → need bit mixing or multiplication hashing.
 - Strings → need polynomial rolling or FNV-like hash.
 - Composite structures → combine field hashes (e.g., XOR, shift-add).
-- Integers: simple modulo (for clean distributions) `hash = key % table_size` (table_size is prime and data distribution is not pathological) --> **data cannot have patterns that align with table size**
-- Integers: multiplicative hashing:
+
+#### VARIOUS HASH FUNCTIONS:
+
+Integers: **simple modulo** (for clean distributions)
+- `hash = key % table_size` (table_size is prime and data distribution is not pathological)
+- very fast
+- --> **data cannot have patterns that align with table size**
+
+Integers: **multiplicative hashing**
 ```c
 unsigned int hash = (unsigned int)key;
 hash = (hash * 2654435761u) % table_size; // golden ratio (scramble bits to even out patterend inputs)
 ```
+- 2654435761 is derived from the golden ratio (2^32 / φ).
+- Helps scramble bits so even patterned inputs spread out well.
+- Often faster than % on some CPUs if table size is power of 2
+
+Integers: **bitwise mixing (for big bits)**
+```c
+unsigned int hash = (unsigned int)key;
+hash ^= hash >> 16;
+hash *= 0x7feb352d;
+hash ^= hash >> 15;
+hash *= 0x846ca68b;
+hash ^= hash >> 16;
+return hash % table_size;
+```
+- This is a mixing function (inspired by MurmurHash).
+- Great when your keys are large and have high correlation.
+- Overkill for small, random-ish data but super safe.
+
+Strings: **polynomial rolling**
+```c
+unsigned long hash = 0;
+unsigned long p = 31; // prime base
+unsigned long m = table_size;
+for (char *s = str; *s; s++) {
+    hash = (hash * p + (*s - 'a' + 1)) % m;
+}
+```
+- Works very well if m is prime.
+- Choose base p as a small prime > number of possible characters.
+
+### practical advice for contests when choosing hash functions
+- For integer keys and prime table size → simple modulo is usually enough.
+- If you see patterns (like all multiples of 10) → use multiplicative hashing with golden ratio.
+- Avoid % with non-primes unless you know your input distribution is random.
+- In production code, prefer well-tested hashes like FNV-1a, MurmurHash, or CityHash.
+
+### Other more complicated functions
+
+| Hash Function            | Pros                              | Cons                                   | Best For                             |
+| ------------------------ | --------------------------------- | -------------------------------------- | ------------------------------------ |
+| **Knuth Multiplicative** | Tiny, very fast                   | Slightly weaker for adversarial inputs | Competitive programming integer keys |
+| **FNV-1a**               | Simple, portable                  | Slightly weaker avalanche than Murmur  | Small strings, quick prototypes      |
+| **MurmurHash3**          | Excellent distribution, very fast | Not cryptographically secure           | Hash tables, bloom filters           |
+| **xxHash**               | Extremely fast                    | Larger code footprint                  | Large datasets, real-time processing |
+| **SipHash**              | Secure                            | Slower                                 | Web servers, networked apps          |
