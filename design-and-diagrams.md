@@ -33,6 +33,9 @@ These are **high-level representations** of a system's structure. They focus on 
 - **DevOps architecture diagram** (process flow diagrams, operational flows)
 - **Microservices architecture**
 
+#### How to
+A guide [here](https://www.geeksforgeeks.org/system-design/how-to-draw-architecture-diagrams/).
+
 #### **Tools:**
 - Draw.io, [Lucidchart](https://www.lucidchart.com/blog/how-to-draw-architectural-diagrams), Microsoft Visio, AWS Architecture Icons, etc.
 
