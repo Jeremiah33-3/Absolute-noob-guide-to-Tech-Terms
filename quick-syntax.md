@@ -9,7 +9,7 @@
 - [Macros in C](#Macros-in-C)
 - [OOP](#OOP)
 - [Hashmap in C](#Hashmap-in-C)
-- [I/O](#I/O)
+- [I/O](#IO)
 
 
 ## Bitwise operators
