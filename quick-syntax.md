@@ -9,6 +9,7 @@
 - [Macros in C](#Macros-in-C)
 - [OOP](#OOP)
 - [Hashmap in C](#Hashmap-in-C)
+- [I/O](#I/O)
 
 
 ## Bitwise operators
@@ -456,3 +457,98 @@ for (char *s = str; *s; s++) {
 | **MurmurHash3**          | Excellent distribution, very fast | Not cryptographically secure           | Hash tables, bloom filters           |
 | **xxHash**               | Extremely fast                    | Larger code footprint                  | Large datasets, real-time processing |
 | **SipHash**              | Secure                            | Slower                                 | Web servers, networked apps          |
+
+## I/O
+
+Quick comparison table:
+| Feature                 | C (`stdio.h`)                | Java (`Scanner`)                | Python (`input`, `print`) |
+| ----------------------- | ---------------------------- | ------------------------------- | ------------------------- |
+| Prompt output           | `printf()`                   | `System.out.print()`            | `input(prompt)`           |
+| Read int                | `scanf("%d", &x)`            | `sc.nextInt()`                  | `int(input())`            |
+| Read string (no spaces) | `scanf("%s", str)`           | `sc.next()`                     | `input()`                 |
+| Read line (with spaces) | `fgets(str, size, stdin)`    | `sc.nextLine()`                 | `input()`                 |
+| Output newline          | `\n`                         | `println()` or `%n` in `printf` | `print()`                 |
+| Output formatting       | Format specifiers `%d %f %s` | Format specifiers `%d %f %s`    | f-strings or `.format()`  |
+| Memory safety           | Manual                       | Automatic                       | Automatic                 |
+
+### C
+- Uses <stdlib.h>
+- format driven
+- scanf requires the address of variables (&age) except for arrays (strings).
+- %d, %f, %s, etc., are format specifiers.
+- Strings with spaces need fgets() or scanf(" %[^\n]s", ...) instead.
+- No automatic memory management — buffer sizes matter.
+- The %c format specifier in scanf() does not ignore whitespace characters (spaces, tabs or newlines) unlike %d, %f, etc. (which skips newline characters as well) We can use a space before %c in scanf() to solve the problem. This will consume any leading whitespace, including the newline from the previous input.
+
+```c
+#include <stdio.h>
+
+int main() {
+    int age;
+    printf("Enter your age: ");         // Output prompt
+    scanf("%d", &age);                  // Read an integer (pass address!)
+
+    char name[50];
+    printf("Enter your name: ");
+    scanf("%s", name);                  // Read a string (no spaces)
+
+    printf("Hello %s, you are %d years old.\n", name, age);
+    return 0;
+}
+```
+### Java
+- object oriented: I/O is class-based and often uses Scanner for input and System.out for output.
+- Scanner methods: nextInt(), nextDouble(), next(), nextLine().
+- You must handle leftover newline characters manually.
+- Java strings are objects — no need for manual memory handling.
+- Output supports both concatenation (+) and printf-style formatting.
+- Output: %n is the platform-independent newline.
+
+```java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your age: ");
+        int age = sc.nextInt();           // Reads an integer
+
+        sc.nextLine();                    // Consume newline left by nextInt()
+
+        System.out.print("Enter your name: ");
+        String name = sc.nextLine();      // Reads full line (can have spaces)
+
+        System.out.println("Hello " + name + ", you are " + age + " years old.");
+    }
+}
+```
+
+Code example on output, zoomed in:
+```java
+System.out.printf("Pi is approximately %.2f%n", 3.14159); // printf style
+System.out.println("Hello World!"); // with newline
+System.out.print("Hello ");         // without newline
+```
+
+### Python
+- high-level, dynamic: is minimalistic and doesn’t require type declarations for input.
+- input() always returns a string.
+- Casting (int(), float()) is explicit when you want numeric types.
+- No need for special newline handling.
+- Output supports f-strings, format(), and %-formatting.
+- `print` handles type conversion automatically.
+
+```python
+age = int(input("Enter your age: "))  # Always returns string; cast to int
+name = input("Enter your name: ")     # Reads entire line
+
+print(f"Hello {name}, you are {age} years old.")
+```
+
+Python code that zooms in on output:
+```python
+print("Hello World!")                      # Newline by default
+print("Hello", "World", sep=", ", end="!")  # Custom separator & end char
+print(f"Pi is approximately {3.14159:.2f}") # f-string formatting
+```
