@@ -51,7 +51,134 @@ long largest_pow_two(long n) {
 | **declaration** | `int[] nums;` | `int numbers[5];` or pointer `int* nums;` | `nums = []/[...]` |
 | **initialisation** | `int[] nums = new int[5];` or `int[] nums = {1, 2, 3, 4, 5}` | `int numbers[] = {1, 2, 3, 4, 5};` | `nums = []/[...]` |
 
-Notes:
+### Copying
+| Language   | Assignment (`arr2 = arr1`)      | Manual Loop                 | Built-in Copy Function(s)                      | Notes                                              |
+| ---------- | ------------------------------- | --------------------------- | ---------------------------------------------- | -------------------------------------------------- |
+| **Java**   | Copies reference (not contents) | `for` loop                  | `Arrays.copyOf`, `System.arraycopy`            | Arrays are objects; must copy element-wise         |
+| **C**      | N/A (arrays decay to pointers)  | `for` loop                  | `memcpy`                                       | Must know element count; no bounds checking        |
+| **Python** | Copies reference (not contents) | `for` loop or comprehension | Slicing (`arr1[:]`), `list(arr1)`, `copy.copy` | Shallow vs deep copy matters for nested structures |
+
+#### Codes
+##### Java
+1. Assignment (arr2 = arr1)
+- Behaviour: Both variables refer to the same array object in memory. Any change to one affects the other.
+- Result: No new array is created; just another reference to the same object.
+- Difference: Fast (just pointer copy) but not a content copy — risky if you want independent arrays.
+
+2. Manual loop
+
+- Behaviour: Iterates over elements and assigns them one by one to a newly created array.
+- Result: Creates an independent array with identical contents.
+- Difference: Works for any type, easy to understand, but slower for large arrays compared to native methods.
+
+3. System.arraycopy
+
+- Behaviour: Native method that efficiently copies elements from one array to another.
+- Result: Independent array (contents copied). Works for partial ranges too.
+- Difference: Very fast (uses native memory copy under the hood) but both arrays must have compatible types.
+
+4. Arrays.copyOf
+
+- Behaviour: Creates a new array and copies specified number of elements.
+- Result: Independent array; can also change size (padding with default values if larger).
+- Difference: Higher-level convenience wrapper, slightly less efficient than System.arraycopy.
+
+```java
+// Using a loop
+int[] arr1 = {1, 2, 3};
+int[] arr2 = new int[arr1.length];
+for (int i = 0; i < arr1.length; i++) {
+    arr2[i] = arr1[i];
+}
+
+// Using Arrays.copyOf
+import java.util.Arrays;
+int[] arr2 = Arrays.copyOf(arr1, arr1.length);
+
+// Using System.arraycopy
+System.arraycopy(arr1, 0, arr2, 0, arr1.length);
+```
+
+##### C
+
+1. Assignment
+- Behaviour: Not possible for whole arrays directly (e.g., arr2 = arr1; is invalid for arrays). Arrays decay to pointers, so copying requires manual work.
+- Result: You cannot duplicate contents without an explicit loop or function call.
+- Difference: Only possible if using pointers and allocating memory, but that copies pointers, not contents.
+
+2. Manual loop
+- Behaviour: Copies each element individually.
+- Result: Independent copy with identical contents.
+- Difference: Safe, clear, but slower for large blocks compared to memcpy.
+
+3. memcpy
+- Behaviour: Performs a raw memory copy from source to destination.
+- Result: Independent copy with identical bytes.
+- Difference: Very fast, but dangerous — requires knowing the exact byte size and assumes memory regions don’t overlap. Not type-safe.
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int arr1[] = {1, 2, 3};
+    int arr2[3];
+
+    // Using a loop
+    for (int i = 0; i < 3; i++) {
+        arr2[i] = arr1[i];
+    }
+
+    // Using memcpy
+    memcpy(arr2, arr1, sizeof(arr1));
+
+    return 0;
+}
+```
+
+##### Python
+
+1. Assignment (arr2 = arr1)
+- Behaviour: Both names point to the same list object.
+- Result: No new list created; modifying one modifies the other.
+- Difference: Simple, fast, but not independent — changes propagate.
+
+2. Manual loop / list comprehension
+- Behaviour: Iterates over elements and builds a new list.
+- Result: Independent shallow copy of the list.
+- Difference: Flexible (can transform elements while copying) but slower than slicing for large lists.
+
+3. Slicing (arr1[:])
+- Behaviour: Creates a new list by copying all elements.
+- Result: Independent shallow copy.
+- Difference: Idiomatic, concise, and efficient for shallow copies.
+
+4. list(arr1)
+- Behaviour: Passes the iterable to list() constructor to make a new list.
+- Result: Independent shallow copy.
+- Difference: Similar to slicing, but works for any iterable.
+
+5. copy.copy and copy.deepcopy
+- Behaviour: copy.copy makes a shallow copy (new container, same references for nested objects).
+copy.deepcopy recursively copies all nested objects.
+- Result: Shallow copy keeps nested references; deep copy makes everything independent.
+- Difference: Deep copy is safer for nested mutable structures but slower and uses more memory.
+
+```python
+# Using slicing
+arr1 = [1, 2, 3]
+arr2 = arr1[:]  # shallow copy
+
+# Using list()
+arr2 = list(arr1)
+
+# Using copy module
+import copy
+arr2 = copy.copy(arr1)       # shallow copy
+arr2_deep = copy.deepcopy(arr1)  # deep copy if nested
+```
+
+### Notes
 - for C, dynamically allocated multi-dimensional arrays require a separate variable to track its size (cannot simply use `sizeof(arr_name)`, as it returns the size of the pointer only **). For not null-terminated arrays, a while loop might be required:
 ```c
 int get_num_rows(char** grid) {
