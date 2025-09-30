@@ -12,6 +12,13 @@
 - [I/O](#IO)
 
 
+# Helpful videos/websites
+## Python
+- syntax: https://youtu.be/PNSIWjWAA7o?si=nacxDxVpamx0kuOr
+- dunder methods: https://youtu.be/qqp6QN20CpE?si=aoe-H98YQXU6p9a0
+- python OOP: https://youtu.be/rLyYb7BFgQI?si=pUZCxa2yWjYePZf6
+
+
 ## Bitwise operators
 
 | Operators | Sign | Language |
