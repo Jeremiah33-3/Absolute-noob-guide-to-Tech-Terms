@@ -2,6 +2,7 @@
 - [Bitwise operators](#Bitwise-operators)
 - [arrays](#arrays)
 - [Mathematical functions](#Mathematical-functions)
+- [Utility functions](#Utility-functions)
 - [Characters](#Characters)
 - [varargs](#varargs)
 - [Datetime](#Datetime)
@@ -17,6 +18,7 @@
 - syntax: https://youtu.be/PNSIWjWAA7o?si=nacxDxVpamx0kuOr
 - dunder methods: https://youtu.be/qqp6QN20CpE?si=aoe-H98YQXU6p9a0
 - python OOP: https://youtu.be/rLyYb7BFgQI?si=pUZCxa2yWjYePZf6
+- python good habits: https://youtu.be/I72uD8ED73U?si=xUljs0CPcnEGRdvb
 
 
 ## Bitwise operators
@@ -229,6 +231,33 @@ int array[2][3] = {
 
 **Notes**:
 - for C, the tricky parts in operations can be assigning the numbers to the correct types -- e.g., large integer might require a type of `long` or `long long`
+
+## Utility functions
+
+### Filtering
+
+1. Python: `filter()` construct an iterator (`filter` object) from elements of an iterable for which a function returns true.
+    - `filter(function, iterable)`
+    -  If the function returns `True` for an element, that element is included in the resulting `filter` object. If the function returns `False`, the element is excluded.
+    -  The `filter()` function returns a `filter` object, which is an iterator. This object yields only the elements from the input iterable for which the function returned `True`. To get a usable collection like a list or tuple, you typically convert the filter object using `list()` or `tuple()`.
+
+2. Java: using `stream`
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class FilterExample {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+        List<Integer> filtered = numbers.stream()
+                                        .filter(n -> n % 2 == 0)
+                                        .collect(Collectors.toList());
+        System.out.println(filtered);  // Output: [2, 4, 6]
+    }
+}
+```
+3. C: manual filtering, use a function to do that
 
 ## Characters
 | Java | C | Python |
