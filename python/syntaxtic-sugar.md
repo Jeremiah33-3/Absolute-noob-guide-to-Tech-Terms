@@ -1,7 +1,7 @@
 ## Table of Contents
 - [Dunder](#Dunder)
-- [Mutable vs Immutable]
-- [List Comprehensions]
+- [Mutable vs Immutable](#mutable-vs-immutable)
+- [List Comprehensions](#List-Comprehensions)
 - [Function Argument & Parameter Types]
 - [if _name_ == "__main__"]
 - [Global Interpreter Lock (GIL)]
