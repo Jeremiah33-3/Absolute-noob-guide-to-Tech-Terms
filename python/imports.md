@@ -1,3 +1,7 @@
+# Table of Contents
+- [Use case of `init.py`](#use-case-of-initpy)
+- [How Python Look For Import Modules](#How-Python-Look-For-Import-Modules)
+
 ## Use case of `init.py`
 
 Video explanation: [link](https://www.youtube.com/watch?v=VEbuZox5qC4)
@@ -181,3 +185,5 @@ def show_home():
 The cleanest solution is to move the _shared dependency_ to a third, neutral file.
 
 Create config.py containing app_name = "SuperApp". __init__.py imports config.py. views.py imports config.py. Since config.py imports nothing else, the cycle is broken.
+
+## How Python Look For Import Modules
