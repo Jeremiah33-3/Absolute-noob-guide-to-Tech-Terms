@@ -2,9 +2,9 @@
 - [Dunder](#Dunder)
 - [Mutable vs Immutable](#mutable-vs-immutable)
 - [List Comprehensions](#List-Comprehensions)
-- [Function Argument & Parameter Types]
-- [if _name_ == "__main__"]
-- [Global Interpreter Lock (GIL)]
+- [Function Argument & Parameter Types](#function-argument--parameter-types)
+- [if _name_ == "__main__"](#if-name--main)
+- [Global Interpreter Lock (GIL)](#global-interpreter-lock-gil)
 
 ***
 _powered by gemini_
