@@ -181,3 +181,8 @@ The GIL is a _mutex_ (lock) that protects access to Python objects, preventing m
 | :--- | :--- | :--- |
 | Memory | Shared between threads | Separate (higher overhead) | 
 | Best For | I/O (Downloading, API calls) | CPU (Image processing, ML) |
+
+## Decorators
+
+### Video explanations
+- specific python decorators: [video](https://www.youtube.com/watch?v=3_P-dxrNCq8)
