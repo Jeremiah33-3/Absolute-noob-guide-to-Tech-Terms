@@ -5,6 +5,7 @@
 - [Function Argument & Parameter Types](#function-argument--parameter-types)
 - [if _name_ == "__main__"](#if-name--main)
 - [Global Interpreter Lock (GIL)](#global-interpreter-lock-gil)
+- [Decorators](#Decorators)
 
 ***
 _powered by gemini_
@@ -185,4 +186,348 @@ The GIL is a _mutex_ (lock) that protects access to Python objects, preventing m
 ## Decorators
 
 ### Video explanations
+- overview: [video](https://www.youtube.com/watch?v=3tyaO-OE0K0)
 - specific python decorators: [video](https://www.youtube.com/watch?v=3_P-dxrNCq8)
+
+### Explanation
+
+At its core, a Python decorator is a design pattern that allows you to modify or enhance the behavior of a function or class without permanently changing its source code.
+
+1. The Core Concept: Functions are Objects
+To understand decorators, you first need to accept one truth about Python: Functions are first-class objects. This means:
+
+- 🧮You can assign functions to variables.
+- 🧮You can pass functions as arguments to other functions.
+- 🧮You can define functions inside other functions.
+
+2. The Anatomy of a Decorator
+- A decorator is simply a function that takes another function as an input, adds some functionality, and returns a new function.
+
+Syntactic sugar with @ symbol, an example:
+
+```python
+import time
+
+def timer_decorator(func):
+    # *args and **kwargs let the wrapper accept any arguments the original function needs
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        
+        # Run the actual function and capture the return value, if any
+        result = func(*args, **kwargs)
+        
+        end_time = time.time()
+        print(f"Function '{func.__name__}' took {end_time - start_time:.4f} seconds to run.")
+        
+        # Return the original function's return value
+        return result
+    
+    return wrapper
+
+@timer_decorator
+def heavy_calculation():
+    # Simulate a slow process
+    time.sleep(1)
+    print("Calculation complete!")
+
+@timer_decorator
+def heavy_calc_with_params(sleep_time):
+    time.sleep(sleep_time)
+    print(f"Slept for {sleep_time} seconds.)
+
+heavy_calculation()
+heavy_calc_with_params
+```
+
+### Best Practice: Using functools.wraps
+
+When you wrap a function, the new function (the wrapper) replaces the original. This means you lose the original function's metadata (like its name and docstring).
+
+To fix this, Python provides a tool called wraps. You should almost always use it when writing decorators.
+
+Example:
+```python
+from functools import wraps
+
+def my_decorator(func):
+    @wraps(func)  # This preserves the metadata of the original 'func'
+    def wrapper(*args, **kwargs):
+        """This is the wrapper function"""
+        return func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def greet():
+    """Prints a greeting."""
+    print("Hi!")
+
+# Without @wraps, this would print "wrapper". 
+# With @wraps, it correctly prints "greet".
+print(greet.__name__)
+```
+### Passing parameters to decorators
+
+To do so, we need to add one more layer of nesting.
+
+Think of this as a Decorator Factory. Instead of the decorator itself, you are writing a function that builds and returns the decorator based on the settings you provide.
+
+Structure: you will need three functions nested inside each other:
+- 🏭 The Factory (Outer): Accepts the arguments (e.g., times=3).
+- 💟 The Decorator (Middle): Accepts the function to be decorated.
+- 🍬 The Wrapper (Inner): Accepts the inputs (*args) for the actual function logic.
+
+### Code Example
+Let's build a decorator that repeats a function call a specific number of times.
+
+```python
+import functools
+
+# Layer 1: The Factory (accepts your settings)
+def repeat(num_times):
+    
+    # Layer 2: The Actual Decorator (accepts the function)
+    def decorator_repeat(func):
+        
+        @functools.wraps(func)
+        # Layer 3: The Wrapper (accepts the function's arguments)
+        def wrapper(*args, **kwargs):
+            print(f"--- Repeating {num_times} times ---")
+            for _ in range(num_times):
+                result = func(*args, **kwargs)
+            return result
+        
+        return wrapper
+    
+    return decorator_repeat
+
+# Usage
+@repeat(num_times=3)
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")
+```
+
+Output:
+```plaintext
+--- Repeating 3 times ---
+Hello, Alice!
+Hello, Alice!
+Hello, Alice!
+```
+
+### Practical example to restrict role-based access
+```python
+current_user = {"username": "guest", "role": "viewer"}
+
+# factory that accepts the params
+def requires_role(required_role):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            if current_user["role"] != required_role:
+                print(f"⛔ ACCESS DENIED: User needs '{required_role}' role.")
+                return None
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@requires_role("admin")
+def delete_database():
+    print("Database deleted!")
+
+# Try to run it as a 'viewer'
+delete_database()
+```
+Output:
+```plaintext
+⛔ ACCESS DENIED: User needs 'admin' role.
+```
+
+### Applying decorators to class
+Applying decorators to a class works on the same principle as functions, but the "target" is different.
+
+Instead of wrapping a function to modify its logic, a Class Decorator wraps the entire class definition. It receives the class object as input, modifies it (or registers it), and returns it.
+
+This is commonly used for:
+
+- Registration: Automatically adding classes to a list (e.g., registering plugins).
+- Enforcing Standards: Adding specific methods or attributes to every class.
+- Design Patterns: Implementing patterns like Singleton (ensuring a class only has one instance).
+
+**The Structure**
+The syntax looks exactly the same, but you place the @ symbol above the class keyword.
+
+```python
+@my_class_decorator
+class MyClass:
+    pass
+```
+
+Equivalent to
+```python
+class MyClass:
+    pass
+
+MyClass = my_class_decorator(MyClass)
+```
+
+### Example 1: Adding method to all classes
+
+```python
+import datetime
+
+def add_timestamp(cls):
+    # Add a new attribute to the class
+    cls.creation_time = datetime.datetime.now()
+    
+    # Add a new method to the class
+    def print_info(self):
+        print(f"Class: {cls.__name__}, Created at: {cls.creation_time}")
+    
+    # Attach the method to the class
+    cls.print_info = print_info
+    
+    # Return the modified class
+    return cls
+
+@add_timestamp
+class User:
+    def __init__(self, name):
+        self.name = name
+
+@add_timestamp
+class Product:
+    def __init__(self, price):
+        self.price = price
+
+# Usage
+u = User("Alice")
+u.print_info()  # This method was added by the decorator!
+
+p = Product(100)
+p.print_info()
+```
+
+### Example 2: adding singleton method
+
+A Singleton is a class that allows only one instance of itself to ever exist. This is useful for things like Database Connections or Configuration Managers.
+
+We can write a decorator that intercepts the creation of a new instance and checks: "Do I already have an instance of this? If yes, return that one. If no, create a new one."
+
+```python
+def singleton(cls):
+    instances = {} # Dictionary to store the single instance
+    
+    def wrapper(*args, **kwargs):
+        if cls not in instances:
+            # If the instance doesn't exist, create it and save it
+            instances[cls] = cls(*args, **kwargs)
+        # Return the stored instance
+        return instances[cls]
+    
+    return wrapper
+
+@singleton
+class DatabaseConnection:
+    def __init__(self):
+        print("Loading database...")
+
+# First call: Creates the object
+db1 = DatabaseConnection() 
+
+# Second call: Returns the EXISTING object (does not print "Loading...")
+db2 = DatabaseConnection()
+
+print(f"Are db1 and db2 the exact same object? {db1 is db2}")
+```
+
+### Common built-in decorators for python classes
+
+1. `@property`: The "Smart" Attribute
+In many languages (like Java), you are taught to write explicit "Getters" and "Setters" (e.g., get_score(), set_score()). This ensures that if you change the internal logic later, you don't break code that uses the class.
+
+In Python, we prefer accessing attributes directly (e.g., `obj.score`), but this risks breaking things if we need to add validation later.
+
+`@property` gives you the best of both worlds: You get the clean syntax of attribute access (`obj.score`), but the backend logic of a function.
+
+The Scenario: A Grade Tracker
+We want to ensure a student's score is never below 0 or above 100 -- validation logic.
+
+```python
+class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self._score = score  # The underscore suggests "private" use
+
+    @property
+    def score(self):
+        """This is the 'getter' logic"""
+        return self._score
+
+    @score.setter
+    def score(self, new_value):
+        """This is the 'setter' logic with validation"""
+        if 0 <= new_value <= 100:
+            self._score = new_value
+            print(f"Score updated to {new_value}")
+        else:
+            print("Error: Score must be between 0 and 100")
+
+# Usage
+s = Student("Alice", 85)
+
+# 1. Accessing looks like a variable, but calls the @property method
+print(s.score)  # Output: 85
+
+# 2. Assigning looks like a variable, but calls the @score.setter method
+s.score = 95    # Output: Score updated to 95
+s.score = 200   # Output: Error: Score must be between 0 and 100
+```
+
+2. `@dataclass`: The Boilerplate Killer
+Introduced in Python 3.7, `@dataclass` is a lifesaver.
+
+When you write a class just to hold data (like a struct), you usually have to write a boring __init__ method, and often a __repr__ method so it prints nicely. `@dataclass` writes these for you automatically.
+
+### Example
+
+Without dataclass:
+```python
+class InventoryItem:
+    def __init__(self, name: str, unit_price: float, quantity_on_hand: int = 0):
+        self.name = name
+        self.unit_price = unit_price
+        self.quantity_on_hand = quantity_on_hand
+        
+    def __repr__(self):
+        return f"InventoryItem(name='{self.name}', unit_price={self.unit_price}, quantity_on_hand={self.quantity_on_hand})"
+
+item = InventoryItem("Widget", 3.50, 10)
+print(item)
+```
+
+With dataclass:
+```python
+from dataclasses import dataclass
+
+@dataclass
+class InventoryItem:
+    name: str
+    unit_price: float
+    quantity_on_hand: int = 0 
+
+item = InventoryItem("Widget", 3.50, 10)
+
+# Automatic nice printing (__repr__)
+print(item) 
+
+# Automatic equality check (__eq__)
+item2 = InventoryItem("Widget", 3.50, 10)
+print(item == item2) # True (regular classes would return False here!)
+```
+
+**Key Features** of `@dataclass`:
+- Auto-generated __init__: You just list the variables and types.
+- Auto-generated __repr__: It prints a readable string representation immediately.
+- Auto-generated __eq__: You can compare two objects with == based on their data, not their memory address.
