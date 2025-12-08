@@ -531,3 +531,104 @@ print(item == item2) # True (regular classes would return False here!)
 - Auto-generated __init__: You just list the variables and types.
 - Auto-generated __repr__: It prints a readable string representation immediately.
 - Auto-generated __eq__: You can compare two objects with == based on their data, not their memory address.
+
+3. `@classmethod`: The "Alternative Constructor"
+
+To understand `@staticmethod` and `@classmethod`, you have to look at what the method accepts as its first argument.
+
+- Instance Method (Standard): Receives self (the specific object).
+- Class Method: Receives cls (the class definition itself).
+- Static Method: Receives nothing (neither self nor cls).
+
+A class method is bound to the class, not the object. It cannot modify specific object data (like `self.name`), but it can modify class state or call the class constructor.
+
+Its most common use is as a _Factory_ to create objects in different ways. Especially so when inheritance is present, the derived classes will not break if the parent class has hardcoded any functionality that could be a class method. 
+
+### Scenario: You have a Pizza class. The standard way to make one is by listing ingredients. But you want a shortcut to make a "Margherita" without typing the ingredients every time.
+
+```python
+class Pizza:
+    def __init__(self, ingredients):
+        self.ingredients = ingredients
+
+    def __repr__(self):
+        return f"Pizza({self.ingredients})"
+
+    @classmethod
+    def margherita(cls):
+        # cls is 'Pizza'. This line is the same as calling Pizza(['cheese', 'tomatoes'])
+        return cls(['cheese', 'tomatoes'])
+
+    @classmethod
+    def prosciutto(cls):
+        return cls(['cheese', 'tomatoes', 'ham'])
+
+# 1. Standard way
+my_pizza = Pizza(['cheese', 'olives'])
+
+# 2. Factory way (using @classmethod)
+lunch = Pizza.margherita() 
+dinner = Pizza.prosciutto()
+
+print(lunch)
+```
+Output:
+```plaintext
+Pizza(['cheese', 'tomatoes'])
+```
+
+4. `@staticmethod`: The "Utility" Function
+
+A static method is just a plain function that happens to live inside a class. It knows nothing about the class or the instance.
+
+You use it when a function logically belongs to a class (for organization), but it doesn't need to access any data inside the class.
+
+### Scenario: You want a utility to check if a pizza size is valid (e.g., only 12, 14, or 16 inches are allowed). This logic doesn't require an existing pizza object to work.
+
+```python
+class Pizza:
+    def __init__(self, radius, ingredients):
+        self.radius = radius
+        self.ingredients = ingredients
+
+    @staticmethod
+    def circle_area(r):
+        # Pure math. Doesn't need 'self' or 'cls'.
+        return 3.14 * (r ** 2)
+
+    def area(self):
+        # This IS an instance method, because it uses self.radius
+        return Pizza.circle_area(self.radius)
+
+# You can call the static method without ever creating a Pizza object
+print(Pizza.circle_area(10))  # Output: 314.0
+```
+
+Key Distinction: You could put circle_area outside the class as a global function. However, putting it inside Pizza with @staticmethod keeps your code organized. It tells other programmers: "This math is related to Pizzas."
+
+***
+### Side-by-side comparison for instance methods, class methods, static methods
+
+```python
+class Demo:
+    # 1. Instance Method
+    def regular_method(self):
+        print(f"I know about this specific object: {self}")
+
+    # 2. Class Method
+    @classmethod
+    def class_method(cls):
+        print(f"I know about the class definition: {cls}")
+
+    # 3. Static Method
+    @staticmethod
+    def static_method():
+        print("I know nothing about the object or the class. I'm just a function.")
+
+d = Demo()
+
+d.regular_method() # Passes 'd' implicitly as 'self'
+d.class_method()   # Passes 'Demo' implicitly as 'cls'
+d.static_method()  # Passes nothing
+```
+***
