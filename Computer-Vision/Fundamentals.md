@@ -38,4 +38,21 @@
 | Eye for sensing | Sensing device for input |
 | Brain for interpreting | An interpreting device for output |
 
+## Computer Vision System Workflow
+
+Layers:
+1. Data acquisition (sensing layer): using devices like cameras (RGB, infrared, stereo, etc.), video feeds (CCTV, drones, phones), or 3D sensors (e.g. LiDAR, Kinect)
+2. (Model training/updating) Preprocessing: resizing, denoising, normalization, contrast enhancement, colour correction, converting formats
+3. (Model training/updating) Processing: object detection/classification, object tracking, scene understanding, decision making/reasoning
+4. Postprocessing & output delivery: JSON, alert, command, to a dashboard or actuator
+5. Storage & Logging
+
 ## Operations
+
+Possible application: logical operations, transforms, statistical operations, geometrical operations, mathematical operations, morphology/coding, fourier/walsh/PCA, histograms/correlation/max min, affine transforms, filtering
+
+### Geometric Transformations
+
+Geometric Transformations of digital images consist of two basic operations:
+1. spatial transformation of coordinates
+2. intensity interpolation that assigns intensity values to the spatially transformed pixels
