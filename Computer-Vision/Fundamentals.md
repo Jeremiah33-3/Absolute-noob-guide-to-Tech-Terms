@@ -56,3 +56,12 @@ Possible application: logical operations, transforms, statistical operations, ge
 Geometric Transformations of digital images consist of two basic operations:
 1. spatial transformation of coordinates
 2. intensity interpolation that assigns intensity values to the spatially transformed pixels
+
+**Relevant concepts:**
+- Affine transformation: [link](https://www.youtube.com/watch?v=B1zCAibMcCM&t)
+- Homogeneous coordinates: [link](https://www.youtube.com/watch?v=S7zIi1qWKfo&t)
+- geometric/affine transformations include: identity, scaling/reflection, rotation (about the origin), translation, shear (vertical), shear (horizontal)
+- piexel-wise operation: element-wise/point operations, applying function independently to any pixel of the image > `b(x, y) = F(a(x,y))`
+- Histogram manipulation
+- Grayscale modification
+- Image normalization
