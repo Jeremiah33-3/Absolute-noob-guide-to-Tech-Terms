@@ -1,3 +1,7 @@
+## Helpful Resource
+
+Comprehensive [introduction](https://www.ibm.com/think/topics/principal-component-analysis#1793360183) to machine learning and models by IBM.
+
 ## Key Definitions and Concepts
 
 ### Machine Vision
