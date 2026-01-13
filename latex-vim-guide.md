@@ -2,6 +2,7 @@
 
 ## Table of content
 - [Getting started](#Getting-started)
+- [Workflow](#Workflow)
 - [quick links](#quick-links)
 - [vim hacks](#vim-hacks)
 - [command lines stuffs](#command-lines-stuffs)
@@ -12,7 +13,9 @@
   - On macOS: install MacTeX
   - On Windows: install TeX Live or MikTeX (search for their differences)
   - check on Terminal if it works: `pdflatex test.tex`
+
 2. Manage vim plug-ins via [vim-plug](https://github.com/junegunn/vim-plug)
+
 3. PDF Viewer Integration that syncs well with Vim
   - Linux: zathura (best integration with vimtex).
   - macOS: Skim (with inverse search configured).
@@ -23,6 +26,7 @@ let g:vimtex_view_method = 'general'
 let g:vimtex_view_general_viewer = 'C:/path/to/SumatraPDF.exe'
 let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
 ```
+
 4. Install Plugins to support workflow
   - [vimtex](https://github.com/lervag/vimtex) → full LaTeX IDE inside Vim
   - Snippets: [UltiSnips](https://github.com/SirVer/ultisnips) + [vim-snippets](https://github.com/honza/vim-snippets) → LaTeX snippet expansions (e.g. typing eq + <Tab> → inserts equation environment).
@@ -35,6 +39,18 @@ let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line 
 8. Defining a main file for the latex to let VimTex know which file to compile
   - put in the main file as well as subfiles: `%! TEX root = main.tex`
 
+## Workflow
+Once installed, your workflow becomes very smooth:
+
+1. Open file: vim document.tex
+
+2. Start Compilation: Type \ll (LocalLeader + l). This starts the continuous compilation daemon.
+
+3. Open Viewer: Type \lv (LocalLeader + v). This opens your PDF viewer.
+
+4. Edit: As you type and save (:w), the PDF updates automatically in the background.
+
+5. Check Errors: If compilation fails, you can type \le to open a quickfix window showing the errors.
 
 ## quick links
 - [vim cheatsheet](https://scthornton.github.io/cheatsheets/vim_cheatsheet/)
