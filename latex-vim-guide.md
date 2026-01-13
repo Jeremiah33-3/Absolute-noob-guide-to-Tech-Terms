@@ -66,7 +66,8 @@ Once installed, your workflow becomes very smooth:
 - [using the :s command](https://linuxize.com/post/vim-find-replace/)
   - `:%s/<pattern>/<replacement>/g`: find and replace all occurences of the specific pattern
 - `:set hlsearch`: highlight all occurences of a word under the cursor
-- `ggVG`: selecting the entire text like Ctrl + A 
+- `ggVG`: selecting the entire text like Ctrl + A
+- `ggdG`: delete all
 
 ## command lines stuffs
 Fun fact: in CMD of Windows, we can run `curl`
