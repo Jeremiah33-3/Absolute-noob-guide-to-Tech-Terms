@@ -2,6 +2,7 @@
 - [Goals of CV](#Goals-of-CV)
 - [Digital Images](#Digital-Images)
 - [Colour Images](#Colour-Images)
+- [Filtering](#Filtering)
 
 # Goals of CV
 
@@ -252,3 +253,122 @@ $H \in [0^{\circ}, 360^{\circ}]$
 
 ### Summary and applications
 Colours are good for indexing and retrieval, as well as colour-based segmentation.
+
+# Filtering
+
+> Fundamental image processing techniques, categorized into point-wise operations, linear filtering, and non-linear filtering.
+
+---
+
+## Point Processing
+
+$x_{ij} = f(p_{ij})$. Point processing operations transform each pixel individually based on its original value, independent of its neighbors.
+
+- **Basic Adjustments:** Includes modifying **brightness** (additive $x_{ij} = p_{ij} + b$ with clipping behaviour at 0 and 255) and **contrast** (multiplicative scaling $x_{ij} = a \cdot p_{ij}$).
+    - Multiplication a<1: decreased contrast; a = 1 is input image; a>1 increased contrast
+- **Normalization (Whitening):** Adjusts image pixels to have zero-mean and unit variance, removing variations in contrast and additive luminance.
+    - mean $\mu = \frac{\sum_{i=1}^I \sum_{j=1}^J p_{ij}}{IJ}$
+    - variance $\sigma^2 = \frac{\sum_{i=1}^I \sum_{j=1}^J (p_{ij} - \mu)^2}{IJ}$
+    - $x_{ij} = \frac{p_{ij} - \mu}{\sigma}$
+- **Non-linear Mapping:** Includes **Gamma Mapping** ($x_{ij} = 255 \cdot (p_{ij} / 255)^{\gamma}$), used to adjust intensity levels by either increasing range of dark areas (to look brighter) or depressing mid-levels increases range of bright areas (look darker).
+    - $\gamma > 0$
+    - Increase: concave curve up, lower gamma value
+    - Decrease: convex curve down, higher gamma value
+- **Histograms:**: info is global (piexel locations don't matter)
+    - Interpretations: higher counts on bins on the left means darker picture and vice versa; spread of the graph denotes contrast.
+    - **Stretching:** A linear mapping to expand a range of values ( $f1$ to $f2$ ) to the full 0–255 range: $x_{ij} = (p_{ij} - f1) \times (255/(f2-f1))$
+    - **Equalization:** A non-linear operation that forces the cumulative distribution function (CDF) to be linear, boosting contrast more aggressively than whitening.
+    - **Thresholding:** Using histograms to separate foreground (objects) from background. **Otsu’s Method** is an automated technique to find the optimal threshold by minimizing weighted intra-class variance: $T^* = argmin_T w_1(T) \cdot \sigma_1^2(T) + w_2(T) \cdot \sigma_2^2(T)$
+
+### More about Equalisation
+
+1. Image histogram ($h_k$)
+
+$$h_k = h_{k}=\sum_{i=1}^{I}\sum_{j=1}^{J}\delta[p_{ij}-k]$$
+
+- represents the frequency (count) of each intensity level $k$ in the input image
+- $p_{ij}$: The pixel value at row $i$ and column $j$.
+- $\delta$: The Kronecker delta function, which equals 1 when the pixel intensity matches $k$ and 0 otherwise.
+- $I, J$: The total number of rows and columns in the image.
+
+2. The Cumulative Distribution Function ($c_k$)
+
+$$c_{k}=\frac{\sum_{l=1}^{k}h_{l}}{IJ}$$
+
+- represents the proportion of pixels that have an intensity less than or equal to $k$
+- Dividing by $I \times J$ normalizes the values so that $c_k$ ranges from 0 to 1.
+- When plotted, a perfectly equalized image would have a $c_k$ that appears as a straight diagonal line.
+
+3. The Transformation Mapping ($x_{ij}$)
+
+$$x_{ij}=Kc_{p_{ij}}$$
+
+- new intensity value $x_{ij}$ for each pixel is determined by mapping its original intensity $p_{ij}$ through the CDF
+- $K$: The maximum possible intensity value of the image (typically 255 for 8-bit images).
+- $c_{p_{ij}}$: The cumulative proportion value corresponding to the original pixel intensity
+- **Equalization vs Stretching**: Stretching is a linear mapping that can only expand a range if the image does not already use the full 0–255 scale. Equalization is non-linear and can change the distribution even if the full range is already in use
+- **Equalization vs whitening**: Equalization boosts the contrast more than whitened data – however, equalization is a more expensive operation.
+
+---
+
+## Linear Filtering (Correlation & Convolution)
+
+(Filtering.) $x_{ij} = f(w_{ij})$. Linear filtering computes a new pixel value as a weighted sum of its neighbors, defined by a **filter kernel** (local window of data from input).
+
+### Operations:
+
+**Cross-Correlation ($\otimes$):** Measures similarity between a template and an image region; often used for **template matching**.
+- motivation: noise reduction (e.g. Impulse & salt and pepper noise and gaussian noise)
+
+$$x_{ij} = \sum_{u=-k}^k \sum_{v=-k}^k f_{uv} \cdot p_{i+u, j+v}$$
+
+- cross correlation formula: denoted $X = P \otimes F$
+- NCC:
+
+$$x_{ij} = \frac{1}{|F| \cdot |w_{ij}| } \sum_{u=-k}^k \sum_{v=-k}^k f_{uv} \cdot p_{i+u, j+v}$$
+
+- where || indicates magnitude of kernel (square of sum of sqaures of all elements in the kernel)
+
+**Convolution (*):** Similar to correlation but involves flipping the kernel in both dimensions before application. It is the standard for image transformations like blurring or edge extraction.
+
+$$x_{ij} = \sum_{u=-k}^k \sum_{v=-k}^k f_{uv} \cdot p_{i-u, j-v}$$
+- denoted by convolution operator: $X = F * P$
+
+**Common Filters:**
+* **Box Filter:** Provides uniform weights to all pixels in a neighborhood, creating a smoothing effect.
+* **Gaussian Filter:** Gives more weight to nearer pixels; it acts as a low-pass filter and is more effective for smoothing than a box filter.
+    - $f_{uv}$ = scale of gaussian
+    - frequency effect: use Gaussian for better smoothing
+    - choice of sigma determines filter effect (> size of kernel)
+* **Sharpening Filter:** Accentuates differences between a pixel and its local average to emphasize edges.
+
+**Boundary Handling:** When a filter window falls off the image edge, methods like **zero-padding**, wrapping around, copying edges, or reflecting across edges are used.
+
+### Convolution vs Cross-Correlation
+>  Cross-correlation is doing a form of recognition. Convolution is doing an image transformation.
+> - convolution is the “standard” we refer to when we talk about filtering
+unless otherwise explicitly stated
+> for images, convolution and correlation are often used interchangeably since the two operations are equivalent if the filter kernels are symmetric
+> Convolutional Neural Networks
+> - Convolution in theory, to connect to classical filtering operations
+> - Cross-correlation in implementation (the “flip” is absorbed into the training)
+
+### Math to convolution
+
+| Property | Formula | Description |
+| :--- | :--- | :--- |
+| Commutative | $f * g = g * f$ | The order in which you convolve two signals does not change the result. |
+| Associative | $(f * g) * h = f * (g * h)$ | When convolving three signals, the grouping of the operations does not matter. |
+| Distributive | $f * (g + h) = (f * g) + (f * h)$ | Convolution distributes over the addition of signals. |
+| Scalar Factoring | $\lambda f * g = f * \lambda g = \lambda(f * g)$ | Scalars (constants) can be factored out of the convolution operation. | 
+| Identity | $f * e = f$ | Convolving a signal with a unit impulse $e$ (where $z = [..., 0, 0, 1, 0, 0, ...]$) leaves the signal unchanged. |
+
+---
+
+## Non-Linear Filters
+
+These filters perform non-linear operations on a neighborhood to achieve specific results that linear filters cannot.
+
+* **Median Filter:** Replaces each pixel with the median value of its neighborhood.
+    * **Strength:** Excellent for removing **impulse** and **salt-and-pepper noise** while remaining **edge-preserving**.
+    * **Comparison:** Unlike a mean filter, it does not introduce new pixel values and does not blur edges as severely.
