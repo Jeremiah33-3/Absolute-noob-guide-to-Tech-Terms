@@ -3,6 +3,7 @@
 - [Digital Images](#Digital-Images)
 - [Colour Images](#Colour-Images)
 - [Filtering](#Filtering)
+- [Gradient and Edges](#Gradient-and-Edges)
 
 # Goals of CV
 
@@ -372,3 +373,114 @@ These filters perform non-linear operations on a neighborhood to achieve specifi
 * **Median Filter:** Replaces each pixel with the median value of its neighborhood.
     * **Strength:** Excellent for removing **impulse** and **salt-and-pepper noise** while remaining **edge-preserving**.
     * **Comparison:** Unlike a mean filter, it does not introduce new pixel values and does not blur edges as severely.
+
+# Gradient and Edges
+
+> Edges give powerful information: reflectance changes textures & appreances, change in surface orientations & shape, depth discontinuities & obj boundaries, shadows...
+>
+> Resilient to lighting and colour + cue for shape and geometry -> useful for recognition and 3D understanding
+
+**How to find edges**: image gradients - sharp discontinuities in intensity; edges correspond to extrema of derivative
+
+## Definitions of gradients
+**Gradient**: a vector that points in the direction of most rapid change in <ins>intensity</ins> - $\nabla f=\left[\frac{\partial f}{\partial x},\frac{\partial f}{\partial y}\right]$
+
+**Gradient direction**: (orientation of edge normal) is given by $\theta = \tan^{-1}\left(\frac{\partial f / \partial y}{\partial f / \partial x}\right)$
+
+**Edge strength**: is given by gradient magnitude: $||\nabla f|| = \sqrt{\left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2}$
+
+---
+**Taking (partial) derivatives of discrete signals (images)**: take finite differences
+
+**Discrete central difference, setting h = 2:**
+
+$$f'(x) = \frac{f(x + 1) - f(x - 1)}{2}$$
+
+And this is how we can compute derivatives for discrete signals (resembles correlation/covolution filter)
+
+1D derivative filter: Correlation $[-1,\ 0,\ 1]$ and Convolution $[1,\ 0,\ -1]$
+
+Because: 
+1. Definition of deriavative: $f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$
+2. Alternative with central difference: $f'(x) = \lim_{h \to 0} \frac{f(x + 0.5h) - f(x - 0.5h)}{h}$
+
+## Appyling derivatives with gradient filters
+
+1. Select gradient filters: $S_x$ and $S_y$
+2. Convolve with image **$f$** to compute image gradient components
+
+$$\frac{\partial f}{\partial x} = S_x * f$$
+and
+$$\frac{\partial f}{\partial y} = S_y * f$$
+
+3. Compute gradient orientation and magnitude
+- Gradient magnitude produces an image of white lines are the traces of the edges
+- Gradient orientation produces something like 3D contours
+
+### Sobel filter example
+
+**Horizontal SF * 1D derivative filter**: $[1, 2, 1]^T * [1, 0, -1]$
+- produces vertical blurring (black black lines)
+
+**Vertical SF * 1D derivative filter**: $[1, 2, 1] * [1, 0, -1]^T$
+- produces horizontal blurring (black black lines)
+
+## Derivative of Gaussian & Laplace filters
+
+**Problem**: noise is high frequency and differentiation accentuates noise:
+$$\frac{d sin wx}{dx} = w cos wx$$
+- possible solution: blur the image first before differentiation (but also blur the edge)
+
+**A better improvement**: _Gaussian Filters_
+- Differentiation property of convolution: $\frac{\partial f}{\partial x} (h * f) = (\frac{\partial f}{\partial x} h) * f$
+    - where $\frac{\partial f}{\partial x} h$ is the derivative of Gaussian, $f$ is input
+    - Essentially boils down to $(h*g) * f$, $h$ is the gaussian filter, $g$ is derivative filter
+- one parameter is choosing $\sigma$, the scale of the gaussian kernel to determine the extent of smoothing
+    - different edge structures appear: large $\sigma$ detects larger-scale edges, smaller ones detect finer edges (difficult to find correct maximum corresponding to the edge)
+
+---
+
+**Laplace**
+To begin, a 2nd order derivative filter can also be approximated with finite differences
+$$f''(x) = \lim_{h \to 0} \frac{f(x + h) - 2f(x) + f(x-h)}{h^2}$$
+- which give rises to 1D Laplace filter: $[1, -2, 1]$
+Discrete Laplacian of x,y:
+$$\nabla^2 f(x, y) = f(x+1, y) + f(x-1, y) + f(x, y+1) + f(x, y-1) - 4f(x, y)$$
+- which gives rise to 2D Laplace filter:
+
+$$
+\begin{array}{|c|c|c|}
+\hline
+0 & 1 & 0 \\
+\hline
+1 & -4 & 1 \\
+\hline
+0 & 1 & 0 \\
+\hline
+\end{array}
+$$
+
+**Quick thoughts on sharpening with Laplacians**
+A: orginal image
+B: img filtered with 1 1 -4 1 1
+C: img filtered with 1 1 -8 1 1
+- B mostly black because negative values are clipped to 0 by display
+- A-B provides sharpening effect
+- A-C is an extension of laplacian kernel with diagonal terms (diagonal edges)
+
+---
+
+**Combining: Laplacian of Gaussian (LoG) filter**
+- input -> LoG -> output
+- Laplace filtering itself is sensitive to noise, but smoothing with Gaussian helps: zero-crossing at edges
+- vs Derivative of gaussian filtering, zero crossings localise edges more accurately but are less convenient to use.
+
+---
+
+**Summary of filters and formula to computer filter values**
+
+| Filter | Formula |
+| :--- | :--- |
+| Gaussian | $G(x, y) = \frac{1}{2\pi\sigma^2} e^{-\frac{x^2 + y^2}{2\sigma^2}}$ |
+| Derivative of Gaussian | $\frac{\partial f}{\partial x} G(x,y)$ |
+| Laplacian of Gaussian | $\nabla^2 G(x,y)$ |
