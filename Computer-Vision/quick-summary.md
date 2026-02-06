@@ -441,9 +441,12 @@ $$\frac{d sin wx}{dx} = w cos wx$$
 ---
 
 **Laplace**
+
 To begin, a 2nd order derivative filter can also be approximated with finite differences
 $$f''(x) = \lim_{h \to 0} \frac{f(x + h) - 2f(x) + f(x-h)}{h^2}$$
+
 - which give rises to 1D Laplace filter: $[1, -2, 1]$
+
 Discrete Laplacian of x,y:
 $$\nabla^2 f(x, y) = f(x+1, y) + f(x-1, y) + f(x, y+1) + f(x, y-1) - 4f(x, y)$$
 - which gives rise to 2D Laplace filter:
@@ -460,17 +463,22 @@ $$
 \end{array}
 $$
 
-**Quick thoughts on sharpening with Laplacians**
+**Quick thoughts on sharpening with Laplacians (2D)**
+
 A: orginal image
+
 B: img filtered with 1 1 -4 1 1
+
 C: img filtered with 1 1 -8 1 1
 - B mostly black because negative values are clipped to 0 by display
-- A-B provides sharpening effect
+- A-B (adding* original image to sharpened details) provides sharpening effect
 - A-C is an extension of laplacian kernel with diagonal terms (diagonal edges)
+- * subtraction sign is used because centre coefficient of kernel is negative (-4)
 
 ---
 
 **Combining: Laplacian of Gaussian (LoG) filter**
+
 - input -> LoG -> output
 - Laplace filtering itself is sensitive to noise, but smoothing with Gaussian helps: zero-crossing at edges
 - vs Derivative of gaussian filtering, zero crossings localise edges more accurately but are less convenient to use.
@@ -484,3 +492,44 @@ C: img filtered with 1 1 -8 1 1
 | Gaussian | $G(x, y) = \frac{1}{2\pi\sigma^2} e^{-\frac{x^2 + y^2}{2\sigma^2}}$ |
 | Derivative of Gaussian | $\frac{\partial f}{\partial x} G(x,y)$ |
 | Laplacian of Gaussian | $\nabla^2 G(x,y)$ |
+
+## Canny Edge Detector
+
+> Adding non-max suppression and hysteresis thresholding to find edges from gradient outputs
+
+### 1. Filter image with derivative of Gaussian
+
+Smoothing to suppress noise, increase contrast to enhance edges. Then derive filtered image.
+
+### 2. Find magniture and orientation of gradient
+
+### 3. Non-maximum suppression
+
+> Thinning the edges
+
+Gradient magnitude: Different lines representing different options for a single piexel line
+- For each pixel, check if it is a local max along the gradient direction. If so, keep as edge, if not, discard (set to 0).
+- Note that this requires checking interpolated values at pixel locations! - esp when the gradient direction doesn't point perfectly at a neighboring pixel; it points between them.
+    - can calculate the exact trajectory using trigonometry
+    - e.g. $$x = \tan(\frac{31}{180} \cdot \pi) \approx 0.6$$
+    - This $0.6$ represents the distance from the vertical center to where the gradient direction intersects the grid boundary.
+    - then calculate weighted averages of the neighboring pixels to estimate what the gradient magnitude would be exactly on that direction line, e.g.: $$0.6 \cdot 124 - 198) + 198$$
+- Or simply approximate by finding the closest pixel locations to two piexels in the gradient direction.
+
+### 4. Thresholding (hysteresis) & Linking
+
+- High threshold might have discontinuous edges
+- Low threshold might have weak edges (pick up too much noise)
+- **Hysteresis Thresholding**: "connects" (set to 255) piexel in clear low threshold to high threshold if they are connected.
+
+**Linking:**
+```plaintext
+1. Find image gradients: G (gradient img, values in [0,255])
+2. Apply NMS: E (single piexcel gradient image after NMS, values in [0, 255])
+3. Thresholding
+    - Apply high threshold H to E to get E_H (all values passing threshold set to 255, all fail set to 0)
+    - Apply low threshold L to E to get E_L (all values passing threshold set to 255, all fail set to 0)
+4. Linking
+    - D = E_L <-> E_H, keep only edges of D which are linked or connected to E_H: get D'
+    - composite E_H and D' to get final edge image
+```
