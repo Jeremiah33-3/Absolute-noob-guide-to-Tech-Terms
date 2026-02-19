@@ -271,6 +271,7 @@ $x_{ij} = f(p_{ij})$. Point processing operations transform each pixel individua
     - mean $\mu = \frac{\sum_{i=1}^I \sum_{j=1}^J p_{ij}}{IJ}$
     - variance $\sigma^2 = \frac{\sum_{i=1}^I \sum_{j=1}^J (p_{ij} - \mu)^2}{IJ}$
     - $x_{ij} = \frac{p_{ij} - \mu}{\sigma}$
+    - linear rescaling of pixel values to a fixed range (e.g., [0,1] or [0,255]); in this sense it is essentially the same as stretching.
 - **Non-linear Mapping:** Includes **Gamma Mapping** ($x_{ij} = 255 \cdot (p_{ij} / 255)^{\gamma}$), used to adjust intensity levels by either increasing range of dark areas (to look brighter) or depressing mid-levels increases range of bright areas (look darker).
     - $\gamma > 0$
     - Increase: concave curve up, lower gamma value
@@ -278,7 +279,7 @@ $x_{ij} = f(p_{ij})$. Point processing operations transform each pixel individua
 - **Histograms:**: info is global (piexel locations don't matter)
     - Interpretations: higher counts on bins on the left means darker picture and vice versa; spread of the graph denotes contrast.
     - **Stretching:** A linear mapping to expand a range of values ( $f1$ to $f2$ ) to the full 0–255 range: $x_{ij} = (p_{ij} - f1) \times (255/(f2-f1))$
-    - **Equalization:** A non-linear operation that forces the cumulative distribution function (CDF) to be linear, boosting contrast more aggressively than whitening.
+    - **Equalization:** A non-linear operation that forces the cumulative distribution function (CDF) to be linear, changing the histogram shape and boosting contrast more aggressively than whitening.
     - **Thresholding:** Using histograms to separate foreground (objects) from background. **Otsu’s Method** is an automated technique to find the optimal threshold by minimizing weighted intra-class variance: $T^* = argmin_T w_1(T) \cdot \sigma_1^2(T) + w_2(T) \cdot \sigma_2^2(T)$
 
 ### More about Equalisation
