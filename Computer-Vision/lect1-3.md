@@ -70,6 +70,7 @@ $$
 **Resolution:**
 - Spatial resolution (sampling): defines the smallest discernible detail (sharpness) using pixels per unit area (e.g., dpi) - pixel density which affects clarity
 - Intensity reolution (quantization): (or bit depth) determines the number of distinct shades or brightness levels (e.g., 8-bit for 256 levels) - colour/grayscale accuracy to prevent banding
+    - bit depth is the number of bits used to represent colour of each pixel in the ditial image (e.g. 8 bit) -> results in grey-levels (intensity or brightness of a single pixel in an image)
 - higher values in both improving image quality by adding detail and smoother transitions, respectively
 - Spatial and intensity resolution determines the file size and also transmission time if we were to send images over the internet.
 - An image of size $M \cdot N$ with a bit-depth of $k$ requires $b$ bits to store, where:
