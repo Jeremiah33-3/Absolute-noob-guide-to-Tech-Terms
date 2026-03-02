@@ -322,6 +322,7 @@ $$x_{ij}=Kc_{p_{ij}}$$
 
 **Cross-Correlation ($\otimes$):** Measures similarity between a template and an image region; often used for **template matching**.
 - motivation: noise reduction (e.g. Impulse & salt and pepper noise and gaussian noise)
+    - note salt and pepper noise: salt: 0, pepper: 255 (spikes)
 
 $$x_{ij} = \sum_{u=-k}^k \sum_{v=-k}^k f_{uv} \cdot p_{i+u, j+v}$$
 
