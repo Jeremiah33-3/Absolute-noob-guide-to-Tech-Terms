@@ -494,7 +494,7 @@ C: img filtered with 1 1 -8 1 1
 | :--- | :--- |
 | Gaussian | $G(x, y) = \frac{1}{2\pi\sigma^2} e^{-\frac{x^2 + y^2}{2\sigma^2}}$ |
 | Derivative of Gaussian | $\frac{\partial f}{\partial x} G(x,y)$ |
-| Laplacian of Gaussian | $\nabla^2 G(x,y)$ |
+| Laplacian of Gaussian | $\nabla^2 G(x,y)$ = = $G \cdot (\frac{x^2+y^2}{σ^4}​−\frac{2}{σ^2})$ |
 
 ## Canny Edge Detector
 
