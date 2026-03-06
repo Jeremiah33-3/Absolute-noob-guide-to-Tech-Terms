@@ -357,6 +357,9 @@ unless otherwise explicitly stated
 > - Convolution in theory, to connect to classical filtering operations
 > - Cross-correlation in implementation (the “flip” is absorbed into the training)
 
+> [!NOTE]
+> Both correlation and convolution are shift invariant: behaves the same everywhere, i.e. output value depends only on the pattern and not position of neighbourhood
+
 ### Math to convolution
 
 | Property | Formula | Description |
