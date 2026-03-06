@@ -275,8 +275,8 @@ $x_{ij} = f(p_{ij})$. Point processing operations transform each pixel individua
     - linear rescaling of pixel values to a fixed range (e.g., [0,1] or [0,255]); in this sense it is essentially the same as stretching.
 - **Non-linear Mapping:** Includes **Gamma Mapping** ($x_{ij} = 255 \cdot (p_{ij} / 255)^{\gamma}$), used to adjust intensity levels by either increasing range of dark areas (to look brighter) or depressing mid-levels increases range of bright areas (look darker).
     - $\gamma > 0$
-    - Increase: concave curve up, lower gamma value
-    - Decrease: convex curve down, higher gamma value
+    - Increase: concave curve down, lower gamma value
+    - Decrease: concave curve up, higher gamma value
 - **Histograms:**: info is global (piexel locations don't matter)
     - Interpretations: higher counts on bins on the left means darker picture and vice versa; spread of the graph denotes contrast.
     - **Stretching:** A linear mapping to expand a range of values ( $f1$ to $f2$ ) to the full 0–255 range: $x_{ij} = (p_{ij} - f1) \times (255/(f2-f1))$
