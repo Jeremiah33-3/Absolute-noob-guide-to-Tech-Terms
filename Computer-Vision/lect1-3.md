@@ -279,7 +279,7 @@ $x_{ij} = f(p_{ij})$. Point processing operations transform each pixel individua
     - Decrease: concave curve up, higher gamma value
 - **Histograms:**: info is global (piexel locations don't matter)
     - Interpretations: higher counts on bins on the left means darker picture and vice versa; spread of the graph denotes contrast.
-    - **Stretching:** A linear mapping to expand a range of values ( $f1$ to $f2$ ) to the full 0–255 range: $x_{ij} = (p_{ij} - f1) \times (255/(f2-f1))$
+    - **Stretching:** A linear mapping to expand a range of values ( $f1$ to $f2$ ) to the full 0–255 range or the max range for that corresponding gray-level/bit-depth: $x_{ij} = (p_{ij} - f1) \times (255/(f2-f1))$
     - **Equalization:** A non-linear operation that forces the cumulative distribution function (CDF) to be linear, changing the histogram shape and boosting contrast more aggressively than whitening.
     - **Thresholding:** Using histograms to separate foreground (objects) from background. **Otsu’s Method** is an automated technique to find the optimal threshold by minimizing weighted intra-class variance: $T^* = argmin_T w_1(T) \cdot \sigma_1^2(T) + w_2(T) \cdot \sigma_2^2(T)$
 
