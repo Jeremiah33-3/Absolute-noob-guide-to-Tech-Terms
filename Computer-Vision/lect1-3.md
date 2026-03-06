@@ -312,6 +312,8 @@ $$x_{ij}=Kc_{p_{ij}}$$
 - **Equalization vs Stretching**: Stretching is a linear mapping that can only expand a range if the image does not already use the full 0–255 scale. Equalization is non-linear and can change the distribution even if the full range is already in use
 - **Equalization vs whitening**: Equalization boosts the contrast more than whitened data – however, equalization is a more expensive operation.
 
+**Steps:** Have a table with original values, then compute bin counts for each value -> calculate percentage of the count -> compute CDF (cumulative density function) -> map original value (X) to new value by using CDF $\times$ max value in the image
+
 ---
 
 ## Linear Filtering (Correlation & Convolution)
